@@ -3,6 +3,14 @@
 
 #include <QMainWindow>
 #include <Windows.h>
+#include <QString>
+#include <QFileDialog>
+#include <QDebug>
+#include <iostream>
+#include <QMessageBox>
+#include <tchar.h>
+#include <stdio.h>
+#include <strsafe.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,10 +24,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-#define BUFFERZ_SIZE 1024
-    char buffer[BUFFERZ_SIZE];
-
-    BOOL ExcudeCmd(char* szOutPutBuf, char* szCmdLine);
+    BOOL ExcudeCmd( char* szCmdLine);
     char* substring(char* ch,int pos,int length);
     bool check_status();
 
@@ -37,10 +42,33 @@ public:
 
     Parameter parameter;
 
+    QString constructParameter(QString mode);
+
+    #define BUFSIZE 1024
+
+    CHAR chBuf[BUFSIZE];
+    DWORD dwRead;
+
+    HANDLE g_hChildStd_IN_Rd = NULL;
+    HANDLE g_hChildStd_IN_Wr = NULL;
+    HANDLE g_hChildStd_OUT_Rd = NULL;
+    HANDLE g_hChildStd_OUT_Wr = NULL;
+
+    HANDLE g_hInputFile = NULL;
+
+    void CreateChildProcess(char* szCmdlinein);
+    void WriteToPipe(void);
+    void ReadFromPipe(void);
+    void ErrorExit(PTSTR lpszFunction);
+
 private slots:
     void on_pushButton_6_clicked();
 
     void on_EncodeBtn_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_DecodeBtn_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -63,3 +63,9 @@ set_target_properties(SimpleWaterMarkGUI PROPERTIES
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(SimpleWaterMarkGUI)
 endif()
+
+if(CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+elseif(CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
+    Set_Target_Properties(SimpleWaterMarkGUI PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+endif()
